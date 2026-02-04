@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-
 public class ArcheryGame extends JPanel implements ActionListener, KeyListener {
 
     private Timer timer;
@@ -10,43 +9,34 @@ public class ArcheryGame extends JPanel implements ActionListener, KeyListener {
     private int targetX, targetY;
     private int targetSpeed;
     private int score;
-
     public ArcheryGame() {
         setPreferredSize(new Dimension(600, 400));
         setBackground(Color.WHITE);
-
         arrowX = 275; // starting arrow position(jaha se shuru keya)
         arrowY = 350;
         arrowShot = false;
-
         targetX = 0;
         targetY = 50;
         targetSpeed = 4;
-
         score = 0;
-
         timer = new Timer(20, this);
         timer.start();
-
         setFocusable(true);
         addKeyListener(this);
     }
+    
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
         // red circle 
         g.setColor(Color.RED);
         g.fillOval(targetX, targetY, 50, 50);
-
         // black rectangle
         g.setColor(Color.BLACK);
         g.fillRect(arrowX, arrowY, 10, 30);
-
         // bow catch karega
         g.setColor(Color.DARK_GRAY);
         g.drawLine(arrowX + 5, 380, arrowX + 5, 350);
-
         // score 
         g.setColor(Color.BLACK);
         g.setFont(new Font("Arial", Font.BOLD, 16));
@@ -60,27 +50,22 @@ public class ArcheryGame extends JPanel implements ActionListener, KeyListener {
         if (targetX <= 0 || targetX >= getWidth() - 50) {
             targetSpeed = -targetSpeed;
         }
-
         // shot ke baad 
         if (arrowShot) {
             arrowY -= 10;
             if (arrowY < 0) {
                 resetArrow();
             }
-
             // collison check karega
             Rectangle arrowRect = new Rectangle(arrowX, arrowY, 10, 30);
             Rectangle targetRect = new Rectangle(targetX, targetY, 50, 50);
-
             if (arrowRect.intersects(targetRect)) {
                 score++;
                 resetArrow();
             }
         }
-
         repaint();
     }
-
     private void resetArrow() {
         arrowShot = false;
         arrowX = 275;
@@ -92,7 +77,6 @@ public class ArcheryGame extends JPanel implements ActionListener, KeyListener {
         if (!arrowShot && e.getKeyCode() == KeyEvent.VK_SPACE) {
             arrowShot = true;
         }
-
         // left right karega arrow ko agar shot nhi hua hai toh
         if (!arrowShot) {
             if (e.getKeyCode() == KeyEvent.VK_LEFT && arrowX > 0) {
@@ -106,13 +90,12 @@ public class ArcheryGame extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) { /* Not used */ }
+    
     @Override
     public void keyTyped(KeyEvent e) { /* Not used */ }
-
     public static void main(String[] args) {
         JFrame frame = new JFrame("Simple Archery Game");
         ArcheryGame gamePanel = new ArcheryGame();
-
         frame.add(gamePanel);
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -121,4 +104,5 @@ public class ArcheryGame extends JPanel implements ActionListener, KeyListener {
         frame.setVisible(true);
     }
 }
+
 
